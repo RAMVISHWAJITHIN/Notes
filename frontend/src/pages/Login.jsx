@@ -1,50 +1,43 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from "axios"
-const Signup = () => {
-  const navigate=useNavigate();
+import axios from 'axios';
+import { useAuth } from '../context/contextProvider';
+
+const Login = () => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async(data) => {
-    console.log('Form Data:', data);
-    // You can send this `data` to your backend here
+  const onSubmit = async (data) => {
     try {
-        const response= await axios.post('http://localhost:3000/api/auth/register',data)
-        console.log(response)
-        if(response.data.success){
-          navigate('/login')
-        }
+      const response = await axios.post('http://localhost:3000/api/auth/login', data);
+      if (response.data.success) {
+        login(response.data.user);
+        localStorage.setItem('token', response.data.token);
+        navigate('/');
+      }
     } catch (error) {
-        console.log(error)
+      console.error(error);
+      // You can add UI error handling here
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-6 text-blue-600">Sign Up</h2>
+        <h2 className="text-2xl font-bold text-center mb-6 text-blue-600">Login</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          {/* Name */}
-          <div>
-            <label htmlFor="name" className="block text-gray-700 mb-1">Name</label>
-            <input
-              id="name"
-              type="text"
-              placeholder="Enter your name"
-              {...register('name', { required: 'Name is required' })}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
-          </div>
-
           {/* Email */}
           <div>
-            <label htmlFor="email" className="block text-gray-700 mb-1">Email</label>
+            <label htmlFor="email" className="block text-gray-700 mb-1">
+              Email
+            </label>
             <input
               id="email"
               type="email"
@@ -63,7 +56,9 @@ const Signup = () => {
 
           {/* Password */}
           <div>
-            <label htmlFor="password" className="block text-gray-700 mb-1">Password</label>
+            <label htmlFor="password" className="block text-gray-700 mb-1">
+              Password
+            </label>
             <input
               id="password"
               type="password"
@@ -85,14 +80,14 @@ const Signup = () => {
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200"
           >
-            Sign Up
+            Login
           </button>
 
-          {/* Login Link */}
+          {/* Register Link */}
           <p className="text-center text-sm text-gray-600">
-            Already have an account?{' '}
-            <Link to="/login" className="text-blue-500 hover:underline">
-              Login
+            Don't have an account?{' '}
+            <Link to="/register" className="text-blue-500 hover:underline">
+              Sign Up
             </Link>
           </p>
         </form>
@@ -101,5 +96,5 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;
 
