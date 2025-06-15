@@ -2,7 +2,8 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../context/contextProvider';
+import { useAuth } from '../context/ContextProvider';
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,24 +21,23 @@ const Login = () => {
       if (response.data.success) {
         login(response.data.user);
         localStorage.setItem('token', response.data.token);
+        toast.success(`${response.data.user.name} logged in successfully`);
         navigate('/');
       }
     } catch (error) {
       console.error(error);
-      // You can add UI error handling here
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-6 text-blue-600">Login</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+    <div className="min-h-screen flex items-center justify-center bg-[#f4f0f0] px-4">
+      <div className="bg-[#f4f0f0] shadow-[8px_8px_16px_#d1cdcd,_-8px_-8px_16px_#ffffff] rounded-2xl p-10 w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Login</h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+
           {/* Email */}
           <div>
-            <label htmlFor="email" className="block text-gray-700 mb-1">
-              Email
-            </label>
+            <label htmlFor="email" className="block text-gray-600 mb-1">Email</label>
             <input
               id="email"
               type="email"
@@ -49,16 +49,14 @@ const Login = () => {
                   message: 'Enter a valid email address',
                 },
               })}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 rounded-xl bg-[#f4f0f0] text-gray-800 shadow-[inset_4px_4px_10px_#d1cdcd,_inset_-4px_-4px_10px_#ffffff] focus:outline-none"
             />
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
           </div>
 
           {/* Password */}
           <div>
-            <label htmlFor="password" className="block text-gray-700 mb-1">
-              Password
-            </label>
+            <label htmlFor="password" className="block text-gray-600 mb-1">Password</label>
             <input
               id="password"
               type="password"
@@ -70,7 +68,7 @@ const Login = () => {
                   message: 'Password must be at least 6 characters',
                 },
               })}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 rounded-xl bg-[#f4f0f0] text-gray-800 shadow-[inset_4px_4px_10px_#d1cdcd,_inset_-4px_-4px_10px_#ffffff] focus:outline-none"
             />
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
           </div>
@@ -78,15 +76,15 @@ const Login = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200"
+            className="w-full py-2 rounded-xl bg-[#f4f0f0] text-gray-800 font-semibold shadow-[4px_4px_10px_#d1cdcd,_-4px_-4px_10px_#ffffff] hover:shadow-inner transition duration-300"
           >
             Login
           </button>
 
-          {/* Register Link */}
+          {/* Link to Signup */}
           <p className="text-center text-sm text-gray-600">
-            Don't have an account?{' '}
-            <Link to="/register" className="text-blue-500 hover:underline">
+            Don&apos;t have an account?{' '}
+            <Link to="/register" className="text-black-600 hover:underline">
               Sign Up
             </Link>
           </p>
@@ -97,4 +95,7 @@ const Login = () => {
 };
 
 export default Login;
+
+
+
 

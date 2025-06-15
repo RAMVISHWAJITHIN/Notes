@@ -1,50 +1,50 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from "axios"
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
 const Signup = () => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async(data) => {
-    console.log('Form Data:', data);
-    // You can send this `data` to your backend here
+  const onSubmit = async (data) => {
     try {
-        const response= await axios.post('http://localhost:3000/api/auth/register',data)
-        console.log(response)
-        if(response.data.success){
-          navigate('/login')
-        }
+      const response = await axios.post('http://localhost:3000/api/auth/register', data);
+      if (response.data.success) {
+        toast.success(`${response.data.user.name} registered successfully`);
+        navigate('/login');
+      }
     } catch (error) {
-        console.log(error)
+      console.error(error);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-6 text-blue-600">Sign Up</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+    <div className="min-h-screen flex items-center justify-center bg-[#f4f0f0] px-4">
+      <div className="bg-[#f4f0f0] shadow-[8px_8px_16px_#d1cdcd,_-8px_-8px_16px_#ffffff] rounded-2xl p-10 w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Sign Up</h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Name */}
           <div>
-            <label htmlFor="name" className="block text-gray-700 mb-1">Name</label>
+            <label htmlFor="name" className="block text-gray-600 mb-1">Name</label>
             <input
               id="name"
               type="text"
               placeholder="Enter your name"
               {...register('name', { required: 'Name is required' })}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 rounded-xl bg-[#f4f0f0] text-gray-800 shadow-[inset_4px_4px_10px_#d1cdcd,_inset_-4px_-4px_10px_#ffffff] focus:outline-none"
             />
             {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
           </div>
 
           {/* Email */}
           <div>
-            <label htmlFor="email" className="block text-gray-700 mb-1">Email</label>
+            <label htmlFor="email" className="block text-gray-600 mb-1">Email</label>
             <input
               id="email"
               type="email"
@@ -56,14 +56,14 @@ const Signup = () => {
                   message: 'Enter a valid email address',
                 },
               })}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 rounded-xl bg-[#f4f0f0] text-gray-800 shadow-[inset_4px_4px_10px_#d1cdcd,_inset_-4px_-4px_10px_#ffffff] focus:outline-none"
             />
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
           </div>
 
           {/* Password */}
           <div>
-            <label htmlFor="password" className="block text-gray-700 mb-1">Password</label>
+            <label htmlFor="password" className="block text-gray-600 mb-1">Password</label>
             <input
               id="password"
               type="password"
@@ -75,7 +75,7 @@ const Signup = () => {
                   message: 'Password must be at least 6 characters',
                 },
               })}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 rounded-xl bg-[#f4f0f0] text-gray-800 shadow-[inset_4px_4px_10px_#d1cdcd,_inset_-4px_-4px_10px_#ffffff] focus:outline-none"
             />
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
           </div>
@@ -83,7 +83,7 @@ const Signup = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200"
+            className="w-full py-2 rounded-xl bg-[#f4f0f0] text-gray-800 font-semibold shadow-[4px_4px_10px_#d1cdcd,_-4px_-4px_10px_#ffffff] hover:shadow-inner transition duration-300"
           >
             Sign Up
           </button>
@@ -91,7 +91,7 @@ const Signup = () => {
           {/* Login Link */}
           <p className="text-center text-sm text-gray-600">
             Already have an account?{' '}
-            <Link to="/login" className="text-blue-500 hover:underline">
+            <Link to="/login" className="text-black-600 hover:underline">
               Login
             </Link>
           </p>
@@ -102,4 +102,6 @@ const Signup = () => {
 };
 
 export default Signup;
+
+
 
